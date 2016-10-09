@@ -1,0 +1,21 @@
+######################################################################################################################################
+# This file defines the arguments (and corresponding tags) for Vast, lists their default values and provides a brief description.    # 
+#                                                                                                                                    #
+# Lines starting with a sharp sign (#) are ignored.                                                                                  #
+# Lines can appear in any order but the column order must be conserved, i.e., var name, tag, type, default value, description.       #
+# Columns are  separated by pipe signs (|). Leading and trailing blanks are automatically removed.                                   #
+# The name of the variable is the one used with function get_arg_value that returns the value of the argument to other functions     #
+#                                                                                                                                    #
+######################################################################################################################################
+#                                                                                                                                    |
+# Variable name         tag       type       default value                                description                                |
+#-------------------------------------------------------------------------------------------------------------------------------------
+  Kmer_len         |   -k     |   int     |  compulsory 		 |    K-mer length
+  HashTabSiz_tmp   |   -hts   |   int     |  compulsory                  |    If > 0 order of magnitude of the hash table size (the actual value will be the closest prime number in file prime_numbers.dat). If < 0 the size is minus the value used
+  SeqInputFile	   |   -seq   |	  char *  |  compulsory			 |    Name of the file containing the 3rd generation (PacBio or Minion) reads
+  coverage	   |   -cov   |	  int  	  |  5				 |    Coverage: the number of time nucleotides of the long reads must be covered by nucleotides of the short reads
+  try		   |   -try   |	  int	  |  0				 |    If 1 the program stops after the sanity check   
+  PN_infile	   |   -pnf   |   char *  |  ./DATA/prime_numbers.dat	 |    Name of the file containing prime numbers that define the true hash table size.
+  bypass_kmer_len  |   -by    |	  int	  |  0				 |    If 0: straightforward computation of the hash value else piecewise computation to avoid overflow (see function hash) 
+  DBG_LVL	   |   -dbg   |	  char *  |  void			 |    Name of the debug output file (or stdout or stderr). If void inhibits debug output else sets PRT_LVL for debugging
+  LOG_LVL	   |   -log   |	  char *  |  stdout			 |    Name of the log output file (or stdout, stderr). If void no log file else sets PRT_LVL for regular output

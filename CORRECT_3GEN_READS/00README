@@ -1,0 +1,10 @@
+# 1) To compile the program :
+> cd SOURCE
+> make or make "OPTM=-O3"
+
+# 2) First define the following environment variable (see file SOURCE/alloc.h)
+> cd ../
+> export CORRECT_3GEN_READS_DIR=$PWD/SOURCE
+
+# 3) Run the program
+> SOURCE/correct_3gen_reads [program options] (if no specified options, print program usage)

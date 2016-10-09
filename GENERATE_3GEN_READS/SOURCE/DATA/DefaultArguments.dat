@@ -1,0 +1,20 @@
+#############################################################################################################################################
+# This file defines the arguments (and corresponding tags) for the program, lists their default values and provides a brief description.    # 
+#                                                                                                                                           #
+# Lines starting with a sharp sign (#) are ignored.                                                                                         #
+# Lines can appear in any order but the column order must be conserved, i.e., var name, tag, type, default value, description.              #
+# Columns are  separated by pipe signs (|). Leading and trailing blanks are automatically removed.                                          #
+# The name of the variable is the one used with function get_arg_value that returns the value of the argument to other functions            #
+#                                                                                                                                           #
+#############################################################################################################################################
+#                                                                                                                                           |
+# Variable name         tag       type            default value                                description                                  |
+#--------------------------------------------------------------------------------------------------------------------------------------------
+  ouputFile	   |   -out   |   char *  |  compulsory				  |    Name of the output file contaning the generated reads
+  read_err_rates   |   -err   |	  char *  |  ./DATA/PacBio_error_rates.dat	  |    Name of the file containing the sequencing technology error rates
+  genome_seq	   |   -gen   |   char *  |  ./DATA/human_chromosomeIV.fa         |    Name of the file containing the genome
+  SeedVal	   |   -seed  |   int     |  16165193				  |    Seed value for random number generator
+  PacBioDistriFile |   -dis   |   char *  |  ./DATA/PacBio_Read_distribution.dat  |    Name of the file containing the PacBio read length distribution
+  NreadsToGenerate |   -nrd   |	  int  	  |  65125				  |    Number of reads to generate
+  DBG_LVL	   |   -dbg   |	  char *  |  void			   	  |    Name of the debug output file (or stdout or stderr). If void inhibits debug output else sets PRT_LVL for debugging
+  LOG_LVL	   |   -log   |	  char *  |  stdout			   	  |    Name of the log output file (or stdout, stderr). If void no log file else sets PRT_LVL for regular output

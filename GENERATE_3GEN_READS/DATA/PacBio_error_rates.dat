@@ -1,0 +1,10 @@
+#
+# The error rate values must lie between 0.0 and 1.0
+# The order mismatch, insertion, deletion must be KEPT!
+#
+# mismatch error rate
+0.030
+# insertion error rate
+0.075
+# deletion error rate
+0.045
