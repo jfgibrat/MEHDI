@@ -14,6 +14,10 @@
   HashTabSiz_tmp   |   -hts   |   int     |  compulsory                  |    If > 0 order of magnitude of the hash table size (the actual value will be the closest prime number in file prime_numbers.dat). If < 0 the size is minus the value used
   SeqInputFile	   |   -seq   |	  char *  |  compulsory			 |    Name of the file containing the 3rd generation (PacBio or Minion) reads
   coverage	   |   -cov   |	  int  	  |  5				 |    Coverage: the number of time nucleotides of the long reads must be covered by nucleotides of the short reads
+  tolerance	   |   -tol   |	  int	  |  50				 |    Tolerance on the difference of 2 k-mer distances in the long read and the short read (see function align_short_reads)  
+  significant	   |   -sig   |	  int	  |  3				 |    Minimum number of k-mer matches to decide that the short read indeed maps to the long read
+  band_width	   |   -bnd   |	  int	  |  4				 |    Band width for the banded dynamic programming algorithm
+  margin	   |   -mar   |	  int	  |  10				 |    Margin used to excise the part of a long read that matches a short read
   try		   |   -try   |	  int	  |  0				 |    If 1 the program stops after the sanity check   
   PN_infile	   |   -pnf   |   char *  |  ./DATA/prime_numbers.dat	 |    Name of the file containing prime numbers that define the true hash table size.
   bypass_kmer_len  |   -by    |	  int	  |  0				 |    If 0: straightforward computation of the hash value else piecewise computation to avoid overflow (see function hash) 

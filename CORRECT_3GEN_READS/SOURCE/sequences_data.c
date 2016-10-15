@@ -109,6 +109,10 @@ int get_first_LR()
 int get_sorted_len_indx(int i)
 {
 
+  /*
+   * This function returns the new index of the reads when they are sorted according to their length (from shortest to longest)
+   */
+
   if(i < 0 || i >= Nreads){
     fprintf(stderr,"Error in get_sorted_seq_indx: invalid value of index i (%d). Its value should be betwween 0 and %d\n\n",i, Nreads-1);
     exit(1);
@@ -117,6 +121,29 @@ int get_sorted_len_indx(int i)
   return(seq_len_indx[i]);
 
 }
+/*==================================================================================================+
+ +==================================================================================================*/
+int get_back_original_indx(int sorted_i)
+{
+
+  /*
+   * This function does the opposite of the previous function. It returns the original index of a read from its sorted index
+   */
+  if(sorted_i < 0 || sorted_i >= Nreads){
+    fprintf(stderr,"Error in get_back_original_indx: invalid value of sorted index i (%d). Its value should be betwween 0 and %d\n\n",sorted_i, Nreads-1);
+    exit(1);
+  }
+
+  for(int i = 0; i < Nreads; i++) {
+    if(seq_len_indx[sorted_i] == i) {
+      return(i);
+    }
+  }
+
+  return(-1);
+
+}
+
 /*==================================================================================================+
  +==================================================================================================*/
 int get_sorted_len(int i)
@@ -162,6 +189,20 @@ void split_seqs_in_LRs_SRs()
   }
   iQsort(seq_lengths, seq_len_indx, 0, Nreads-1);
 
+#ifdef DEBUG
+  fprintf(stdout,"\n");
+  for(i = 0 ; i < Nreads; i++) {
+    if(i == 0) {
+      fprintf(stdout,"%2dst shortest reads is number %d\n",i+1, seq_len_indx[i]+1);
+    } else if(i == 1) {
+      fprintf(stdout,"%2dnd shortest reads is number %d\n",i+1, seq_len_indx[i]+1);
+    } else if(i == 2) {
+      fprintf(stdout,"%2drd shortest reads is number %d\n",i+1, seq_len_indx[i]+1);
+    } else {
+      fprintf(stdout,"%2dth shortest reads is number %d\n",i+1, seq_len_indx[i]+1);
+    }
+  }
+#endif
   /*
    * Determine the limit between short reads and long reads
    */
@@ -184,10 +225,12 @@ void split_seqs_in_LRs_SRs()
   }
   first_LR = i;
 
-  fprintf(stdout,"There are %d long reads totaling %d nucleotides\n",Nreads-first_LR,tmp);
-  fprintf(stdout,"The shortest long read contains %d nucleotides. It as has index %d (the index starts at zero)\n",seq_lengths[seq_len_indx[first_LR]], first_LR);
-  fprintf(stdout,"The longest  long read contains %d nucleotides.\n",seq_lengths[seq_len_indx[Nreads-1]]);
-  fprintf(stdout,"There are %d short reads totaling %d nucleotides\n",first_LR,Nbases-tmp);
+  fprintf(stdout,"There are %d 'long reads' totaling %d nucleotides\n",Nreads-first_LR,tmp);
+  fprintf(stdout,"\t- The shortest 'long read' contains %d nucleotides. Its index is %d (the index starts at zero)\n",seq_lengths[seq_len_indx[first_LR]], first_LR);
+  fprintf(stdout,"\t- The longest  'long read' contains %d nucleotides.\n",seq_lengths[seq_len_indx[Nreads-1]]);
+  fprintf(stdout,"There are %d 'short reads' totaling %d nucleotides\n",first_LR,Nbases-tmp);
+  fprintf(stdout,"\t- The shortest 'short read' contains %d nucleotides.\n",seq_lengths[seq_len_indx[0]]);
+  fprintf(stdout,"\t- The longest  'short read' contains %d nucleotides.\n",seq_lengths[seq_len_indx[first_LR-1]]);
 
 }
 

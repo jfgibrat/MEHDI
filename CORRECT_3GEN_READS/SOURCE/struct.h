@@ -18,13 +18,17 @@
  */
 
 /*
- * Node of the hash table linked lists
+ * Node of the hash table linked lists.
+ *
+ * Note : if you must change the type of the members in node, 
+ * do not forget to modify the sanity_check function accordingly 
+ * (in util.c)
  */
 struct node		    
 {			    
-  uint8_t  kmer_tag;        // If you must change the type of the members in node, 
-  uint16_t LongReadNumber;  // do not forget to modify the sanity_check function 
-  uint16_t position;	    // accordingly (in util.c)
+  uint8_t  kmer_tag;        // The K-mer id. (kmer_tag *and the hash value* uniquely identify a given k-mer) 
+  uint16_t LongReadNumber;  // The long read number on which the current k-mer matches (numbering starts at 1)
+  uint16_t position;	    // The starting position on the long read of the matching k-mer
   struct node *next;	    
 };                          
 
@@ -33,8 +37,8 @@ struct node
  */
 struct hash_return_value
 {
-  uint32_t hash_val;
-  uint32_t kmer_tag;
+  uint32_t hash_val;        // The remainder of the division by a prime number ==> the hash value 
+  uint32_t kmer_tag;        // The dividend  of the division by a prime number ==> the k-mer identifyer
 };
 
 /*
@@ -42,8 +46,8 @@ struct hash_return_value
  */
 struct node1
 {
-  uint16_t ShortReadNumber;
-  uint16_t position;
-  uint16_t Nkmer;
+  uint16_t ShortReadNumber; // Number of a short read whose k-mers map the current long read
+  uint16_t Nkmer;           // Numbering of the (non overlapping) k-mer on the short read (starts at 1
+  uint16_t position;        // Starting position of the Nkmer-th k-mer on the * current long read*
   struct node1 *next;	    
 };

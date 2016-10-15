@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <inttypes.h>
 #include <math.h>
-#include "SOURCE/alloc.h"
+#include "../SOURCE/alloc.h"
 
 int chomp(char *str);
 

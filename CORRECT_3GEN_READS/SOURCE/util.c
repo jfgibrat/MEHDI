@@ -298,8 +298,10 @@ void sanity_check(int NberLongReads, int LongestReadLength, int Kmer_len, uint32
   }
 
   if(nerr != 0) {
-    fprintf(stderr,"Of course, after modifying the 'node' member types in hashtable.c, do not forget to modify the 'sanity_check' function (in util.c) accordingly!\n");
+    fprintf(stderr,"Of course, after modifying the 'node' member types in hashtable.c, do not forget to modify the 'sanity_check' function (in util.c) accordingly!\n\n");
     exit(1);
+  } else {
+    fprintf(stdout,"\nPassing sanity check OK\n\n");
   } 
 
 }

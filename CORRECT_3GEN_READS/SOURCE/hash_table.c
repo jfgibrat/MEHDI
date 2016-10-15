@@ -47,6 +47,25 @@ void initialise_hash_table(uint32_t HashMaxSize)
  *                                                         *
  *                                                         *
  ***********************************************************/
+void free_hash_table(uint32_t HashMaxSize)
+{
+  struct node *keep;
+
+  for(int i = 0; i < HashMaxSize; i++) {
+    while((keep = HashTable[i].next) != NULL) {
+      HashTable[i].next = keep->next;
+      FREE(keep);
+    }
+  }
+
+  FREE(HashTable);
+
+}
+
+/***********************************************************
+ *                                                         *
+ *                                                         *
+ ***********************************************************/
 struct node *get_HashTable()
 {
   return(HashTable);
@@ -189,7 +208,6 @@ uint64_t *get_power4_array()
 uint8_t return_base(uint8_t *v, int pos);
 
 static struct hash_return_value hrv;
-char tmp[100];   // DEBUG
 
 struct hash_return_value *hash(uint8_t *v, int pos, int kmer_len, uint32_t HashMaxSize) 
 {
@@ -229,7 +247,6 @@ struct hash_return_value *hash(uint8_t *v, int pos, int kmer_len, uint32_t HashM
   if(kmer_len > 30 || atoi(get_arg_value("bypass_kmer_len"))) {
     for(i = 0; i < kmer_len; i++) {
       base = return_base(v,pos+i);
-      //      tmp[i] = decode_base(base); // DEBUG
       hh = base * power4[i];
       ri = hh % HashMaxSize;
       di = hh / HashMaxSize;
@@ -240,19 +257,17 @@ struct hash_return_value *hash(uint8_t *v, int pos, int kmer_len, uint32_t HashM
     hh = 0;
     for(i = 0; i < kmer_len; i++) {
       base = return_base(v,pos+i);
-      //      tmp[i] = decode_base(base); // DEBUG
       hh += base * power4[i];
     }
     dd = hh / HashMaxSize;
     rr = hh % HashMaxSize;
   }
-  //  tmp[kmer_len] = '\0'; // DEBUG
 
   hrv.kmer_tag = dd;
   hrv.hash_val = rr;
-  //  fprintf(stdout,"hh= %lu kmer_tag= %d hash_val= %d\t",hh, hrv.kmer_tag, hrv.hash_val); //DEBUG
-  //  fprintf(stdout,"kmer_tag= %d hash_val= %d\t",hrv.kmer_tag, hrv.hash_val); //DEBUG
+
   return(&hrv);
+
 }
 /***********************************************************
  *                                                         *
@@ -265,7 +280,6 @@ int get_first_LR();
 int get_sorted_len_indx(int i);
 void initialize_power4_array();
 char **get_seq_titles();
-char *dna_bit_decode(uint8_t *m_data, int dna_len);
 
 void hash_long_reads(uint32_t HashTableSize)
 {
@@ -303,8 +317,6 @@ void hash_long_reads(uint32_t HashTableSize)
   for(ii = first_LR, nLR = 1; ii < Nreads; ii++, nLR++) {   // Note: the first long read has number 1
     lr = get_sorted_len_indx(ii);
     work = seq_bits[lr];
-    //    fprintf(stdout,"\n\n%s %d\n",seq_titles[lr],seq_lengths[lr]); // DEBUG
-    //    fprintf(stdout,"%s\n",dna_bit_decode(work,seq_lengths[lr])); // DEBUG
     for(jj = 0; jj <= seq_lengths[lr] - Kmer_len; jj++) {
       pp = hash(work,jj,Kmer_len,HashTableSize);
       if(HashTable[pp->hash_val].LongReadNumber == 0) {
@@ -332,9 +344,14 @@ int explore_lkd_list(uint32_t hash_val)
   struct node *pn;
   int i = 0;
 
+#ifdef DEBUG1
   fprintf(stdout,"Hash value = %d\n",hash_val);
+#endif
+
   for(pn = &HashTable[hash_val]; pn != NULL; pn = pn->next) {
+#ifdef DEBUG1
     fprintf(stdout,"\taddress: %p  position=%u  LongReadNumber=%u kmer_tag=%u\n",pn,pn->position,pn->LongReadNumber,pn->kmer_tag);
+#endif
     if(pn->LongReadNumber != 0) {
       i++;
     }

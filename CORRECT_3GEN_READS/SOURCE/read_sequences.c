@@ -142,7 +142,7 @@ void dna_bit_decode(char **dna_str, uint8_t *m_data, int dna_len, int skip_alloc
   uint8_t shift;
   uint8_t base;
 
-  if(skip_alloc) {
+  if(!skip_alloc) {
     ALLOC((*dna_str), dna_len+1);
   }
 

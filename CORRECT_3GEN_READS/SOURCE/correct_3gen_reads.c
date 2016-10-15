@@ -42,6 +42,7 @@ void sanity_check(int NberLongReads, int LongestReadLength, int Kmer_len, uint32
 int explore_lkd_list(uint32_t hash_val);
 void dna_bit_encode(uint8_t **m_data, char *dna_str, int dna_len);
 void dna_bit_decode(char **dna_str, uint8_t *m_data, int dna_len, int skip_alloc);
+void align_short_reads(uint32_t HashTableSize);
 
 int main(int argc, char *argv[])
 {
@@ -73,7 +74,7 @@ int main(int argc, char *argv[])
   nn = get_Nreads();
   fprintf(stdout,"Number of reads=%d\n",nn);
   for(int i = 0; i < nn; i++) {
-    fprintf(stdout,"%s -- %d\n",p1[i],p2[i]);
+    fprintf(stdout,"%s --- length= %d\n",p1[i],p2[i]);
     dna_bit_decode(&p4,p3[i],p2[i],0);
     fprintf(stdout,"%s\n",p4);
     dna_bit_encode(&p5,p4,p2[i]);
@@ -115,6 +116,7 @@ int main(int argc, char *argv[])
   int *nbers;
   int mxl;
   uint32_t ii;
+  int i;
 
   ALLOC(tally,HashMaxSize);
   for(ii = 0; ii < HashMaxSize; ii++) {
@@ -141,9 +143,7 @@ int main(int argc, char *argv[])
   /*
    * Align the short reads on the long reads
    */
-#ifdef WORK_IN_PROGRESS
-  align_short_reads();
-#endif
+  align_short_reads(HashMaxSize);
 
   return(0);
 
